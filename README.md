@@ -28,7 +28,7 @@
   - Spring Stream API
   - SQL
   - PostgreSQL
-  - Docker Compose
+
   
 - **Инструменты**:
   - GIT
@@ -36,9 +36,6 @@
   - Swagger
   - Postman
   - 
-## Условия
-- Убедитесь, что у вас установлены следующие программные компоненты:
-  - [Docker](https://www.docker.com/products/docker-desktop/)
 
 ## Начало работы
 
