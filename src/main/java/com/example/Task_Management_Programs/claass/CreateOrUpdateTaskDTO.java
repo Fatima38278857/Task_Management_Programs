@@ -1,8 +1,8 @@
 package com.example.Task_Management_Programs.claass;
 
 
-import com.example.Task_Management_Programs.enumm.TaskPriority;
-import com.example.Task_Management_Programs.enumm.TaskStatus;
+import com.example.Task_Management_Programs.enums.TaskPriority;
+import com.example.Task_Management_Programs.enums.TaskStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

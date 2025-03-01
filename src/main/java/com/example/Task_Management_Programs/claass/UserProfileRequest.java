@@ -1,9 +1,8 @@
 package com.example.Task_Management_Programs.claass;
 
 
-import com.example.Task_Management_Programs.enumm.Role;
+import com.example.Task_Management_Programs.enums.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

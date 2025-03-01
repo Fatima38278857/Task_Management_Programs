@@ -1,7 +1,7 @@
 package com.example.Task_Management_Programs.claass;
 
 
-import com.example.Task_Management_Programs.enumm.TaskPriority;
+import com.example.Task_Management_Programs.enums.TaskPriority;
 import lombok.Data;
 
 @Data

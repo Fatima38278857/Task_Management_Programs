@@ -1,4 +1,4 @@
-package com.example.Task_Management_Programs.mapperr;
+package com.example.Task_Management_Programs.mapperImpl;
 
 
 import com.example.Task_Management_Programs.dto.UserDTO;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
  */
 @Component
-public class UserMapperr {
+public class UserMapperImpl {
     public UserDTO toDTO(UserEntity userEntity) {
         if (userEntity == null) {
             return null;

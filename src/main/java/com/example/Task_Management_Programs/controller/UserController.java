@@ -6,8 +6,7 @@ import com.example.Task_Management_Programs.dto.UserDTO;
 import com.example.Task_Management_Programs.entity.Register;
 import com.example.Task_Management_Programs.entity.UserEntity;
 import com.example.Task_Management_Programs.impl.UserService;
-import com.example.Task_Management_Programs.mapper.UserMapper;
-import com.example.Task_Management_Programs.mapperr.UserMapperr;
+import com.example.Task_Management_Programs.mapperImpl.UserMapperImpl;
 import com.example.Task_Management_Programs.repository.RegisterRepository;
 import com.example.Task_Management_Programs.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,10 +41,9 @@ public class UserController {
     private RegisterRepository registerRepository;
     @Autowired
     private UserService userService;
+
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private UserMapperr userMapperr;
+    private UserMapperImpl userMapperImpl;
 
 
 
@@ -89,7 +87,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         UserEntity userEntity = userService.findById(id);
-        UserDTO userDTO = userMapperr.toDTO(userEntity);
+        UserDTO userDTO = userMapperImpl.toDTO(userEntity);
         return ResponseEntity.ok(userDTO);
     }
 }

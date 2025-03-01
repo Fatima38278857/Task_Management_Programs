@@ -1,7 +1,7 @@
 package com.example.Task_Management_Programs.dto;
 
 
-import com.example.Task_Management_Programs.enumm.Role;
+import com.example.Task_Management_Programs.enums.Role;
 import lombok.Data;
 
 

@@ -6,20 +6,21 @@ import com.example.Task_Management_Programs.dto.CommentDTO;
 import com.example.Task_Management_Programs.dto.TaskDTO;
 import com.example.Task_Management_Programs.entity.TaskEntity;
 import com.example.Task_Management_Programs.entity.UserEntity;
-import com.example.Task_Management_Programs.mapper.TaskMapper;
-import com.example.Task_Management_Programs.mapperr.TaskMapperr;
+import com.example.Task_Management_Programs.mapperImpl.TaskMapperImpl;
 import com.example.Task_Management_Programs.repository.TaskRepository;
 import com.example.Task_Management_Programs.service.TaskImpl;
 import com.example.Task_Management_Programs.service.UserImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -27,9 +28,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.access.annotation.Secured;
 
-import java.util.List;
+
 import java.util.Optional;
 
 @Slf4j
@@ -47,11 +47,9 @@ public class TaskController {
     private TaskRepository taskRepository;
 
     @Autowired
-    private TaskMapper taskMapper;
-    @Autowired
-    private TaskMapperr taskMapperr;
+    private TaskMapperImpl taskMapperImpl;
 
-
+    @PreAuthorize("hasRole('AUTHOR')")
     @PostMapping("/assign-task")
     @Operation(summary = "Назначить задачу пользователю",
             responses = {
@@ -73,15 +71,36 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/user/{userId}")
-    @Operation(summary = "Получиить задачу и по Id user и все коментарии",
+    @GetMapping(value = "/user/{userId}", params = {})
+    @Operation(summary = "Получить задачи пользователя и их комментарии",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Задачи успешно получены"),
-                    @ApiResponse(responseCode = "404", description = "User не найдет")
+                    @ApiResponse(responseCode = "404", description = "User не найден")
             })
-    public List<TaskDTO> getTasksByUserId(@PathVariable Long userId) {
-        return taskService.getTasksByUserId(userId);
+    public Page<TaskDTO> getTasksByUserId(@PathVariable Long userId, Pageable pageable) {
+        return taskService.getTasksByUserId(userId, pageable);
     }
+
+    @GetMapping("/tasks")
+    @Operation(summary = "Получить задачи с фильтрацией по статусу и/или приоритету")
+    public Page<TaskDTO> getTasks(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String priority,
+            Pageable pageable) {
+
+        return taskService.getTasksWithFilters(status, priority, pageable);
+    }
+
+    @GetMapping("/executor/{executorId}")
+    @Operation(summary = "Получить задачи по Id исполнителя с пагинацией",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Задачи успешно получены"),
+                    @ApiResponse(responseCode = "404", description = "Исполнитель не найден")
+            })
+    public Page<TaskDTO> getTasksByExecutor(@PathVariable Long executorId, @PageableDefault(size = 10) Pageable pageable) {
+        return taskService.getTasksByExecutor(executorId, pageable);
+    }
+
 
     @PostMapping("/{taskId}/comments")
     @Operation(summary = "Дабавить комментарии к задаче",
@@ -98,7 +117,7 @@ public class TaskController {
         return new ResponseEntity<>(commentDTO, HttpStatus.OK);
     }
 
-
+    @PreAuthorize("hasRole('AUTHOR')")
     @PostMapping("/add")
     @Operation(summary = "Create a new task",
             responses = {
@@ -172,6 +191,7 @@ public class TaskController {
         TaskDTO updatedTask = taskService.updateTask(id, createOrUpdateTaskDTO, currentUser);
         return ResponseEntity.ok(updatedTask);
     }
+
     @Operation(
             summary = "Удаление задачи",
             description = "Удаляет задачу по указанному идентификатору. Требует аутентификации.",

@@ -17,9 +17,9 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
                                      @Param("authorId") Long authorId,
                                      @Param("commentsId") Long commentsId);
 
-    List<CommentEntity> findByTask(TaskEntity task);
 
-    List<CommentEntity> findByTaskId(Long taskId);
+
+
 }
 
 

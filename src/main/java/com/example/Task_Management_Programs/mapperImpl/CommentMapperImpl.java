@@ -1,4 +1,4 @@
-package com.example.Task_Management_Programs.mapperr;
+package com.example.Task_Management_Programs.mapperImpl;
 
 
 import com.example.Task_Management_Programs.dto.CommentDTO;
@@ -11,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CommentMapperr {
+public class CommentMapperImpl {
     @Autowired
     private TaskRepository taskRepository;
     private UserRepository userRepository;
-
-
 
     public CommentDTO toDTO(CommentEntity comment) {
         if (comment == null) {
@@ -35,7 +33,7 @@ public class CommentMapperr {
         return dto;
     }
 
-    public  CommentEntity toEntity(CommentDTO dto) {
+    public CommentEntity toEntity(CommentDTO dto) {
         if (dto == null) {
             return null;
         }

@@ -8,8 +8,8 @@ import com.example.Task_Management_Programs.entity.CommentEntity;
 import com.example.Task_Management_Programs.exception.NotFoundCommentException;
 import com.example.Task_Management_Programs.impl.CommentService;
 import com.example.Task_Management_Programs.impl.UserService;
-import com.example.Task_Management_Programs.mapperr.CommentMapperr;
-import com.example.Task_Management_Programs.mapperr.UserMapperr;
+import com.example.Task_Management_Programs.mapperImpl.CommentMapperImpl;
+import com.example.Task_Management_Programs.mapperImpl.UserMapperImpl;
 import com.example.Task_Management_Programs.repository.CommentRepository;
 import com.example.Task_Management_Programs.repository.TaskRepository;
 import com.example.Task_Management_Programs.repository.UserRepository;
@@ -36,27 +36,22 @@ import java.util.stream.Collectors;
  * - {@link UserRepository} — для работы с пользователями.
  * - {@link TaskRepository} — для работы с задачами.
  * - {@link UserService} — для получения текущего пользователя.
- * - {@link UserMapperr} — для преобразования пользователей в DTO.
- * - {@link CommentMapperr} — для преобразования комментариев в DTO.
+ * - {@link UserMapperImpl} — для преобразования пользователей в DTO.
+ * - {@link CommentMapperImpl} — для преобразования комментариев в DTO.
  */
 @Service
 public class CommentImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
-    private final TaskRepository taskRepository;
     private final UserService userService;
-    private final UserMapperr userMapperr;
-    private final CommentMapperr commentMapperr;
+
+    private final CommentMapperImpl commentMapperImpl;
 
     @Autowired
-    public CommentImpl(CommentRepository commentRepository, UserRepository userRepository, TaskRepository taskRepository, UserService userService, UserMapperr userMapperr, CommentMapperr commentMapperr) {
+    public CommentImpl(CommentRepository commentRepository, UserService userService, UserMapperImpl userMapperImpl, CommentMapperImpl commentMapperr) {
         this.commentRepository = commentRepository;
-        this.userRepository = userRepository;
-        this.taskRepository = taskRepository;
         this.userService = userService;
-        this.userMapperr = userMapperr;
-        this.commentMapperr = commentMapperr;
+        this.commentMapperImpl = commentMapperr;
     }
 
     /**
@@ -79,7 +74,7 @@ public class CommentImpl implements CommentService {
     @Override
     public List<CommentDTO> getAllComment(long taskId) {
         List<CommentEntity> comment = commentRepository.findAll();
-        return comment.stream().map(commentMapperr::toDTO)
+        return comment.stream().map(commentMapperImpl::toDTO)
                 .collect(Collectors.toList());
 
     }
@@ -120,7 +115,7 @@ public class CommentImpl implements CommentService {
         // Сохранение комментария
         commentRepository.save(comment);
         // Возврат обновленного комментария в виде DTO
-        return commentMapperr.toDTO(comment);
+        return commentMapperImpl.toDTO(comment);
     }
 
 }

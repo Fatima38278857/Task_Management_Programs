@@ -1,4 +1,4 @@
-package com.example.Task_Management_Programs.mapperr;
+package com.example.Task_Management_Programs.mapperImpl;
 
 
 import com.example.Task_Management_Programs.claass.CreateOrUpdateTaskDTO;
@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 
  */
 @Component
-public class TaskMapperr {
-    private final CommentMapperr commentMapper;
+public class TaskMapperImpl {
+    private final CommentMapperImpl commentMapper;
     private final UserRepository userRepository;
 
-    public TaskMapperr(CommentMapperr commentMapper, UserRepository userRepository) {
+    public TaskMapperImpl(CommentMapperImpl commentMapper, UserRepository userRepository) {
         this.commentMapper = commentMapper;
         this.userRepository = userRepository;
     }
@@ -45,7 +45,7 @@ public class TaskMapperr {
         taskDTO.setPriority(taskEntity.getPriority());
         taskDTO.setUserId(taskEntity.getUser().getId());
         if (taskEntity.getComments() != null) {
-            CommentMapperr commentMapper = new CommentMapperr();
+            CommentMapperImpl commentMapper = new CommentMapperImpl();
             List<CommentDTO> comments = taskEntity.getComments().stream()
                     .map(commentMapper::toDTO)
                     .collect(Collectors.toList());

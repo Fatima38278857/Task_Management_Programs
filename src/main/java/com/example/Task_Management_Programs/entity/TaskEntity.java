@@ -1,8 +1,8 @@
 package com.example.Task_Management_Programs.entity;
 
 
-import com.example.Task_Management_Programs.enumm.TaskPriority;
-import com.example.Task_Management_Programs.enumm.TaskStatus;
+import com.example.Task_Management_Programs.enums.TaskPriority;
+import com.example.Task_Management_Programs.enums.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;

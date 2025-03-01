@@ -1,4 +1,4 @@
-package com.example.Task_Management_Programs.enumm;
+package com.example.Task_Management_Programs.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

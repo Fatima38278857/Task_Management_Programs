@@ -6,12 +6,15 @@ import com.example.Task_Management_Programs.repository.UserRepository;
 import com.example.Task_Management_Programs.security.AuthenticationRequest;
 import com.example.Task_Management_Programs.security.JwtUtil;
 import com.example.Task_Management_Programs.security.RegistrationRequest;
+import com.example.Task_Management_Programs.service.UserImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +30,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/authenticate")
 @RequiredArgsConstructor
 public class AuthenticationController {
+
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtUtil jwtUtil;
-    private UserRepository userRepository;
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
 
     @Operation(summary = "Создание токена для пользователя",
             description = "Аутентифицирует пользователя и возвращает JWT токен.")
@@ -72,6 +76,7 @@ public class AuthenticationController {
     })
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegistrationRequest request) {
+        log.info("Попытка регистрации пользователя: {}", request.login());
         return userService.registerUser(request);
     }
 }

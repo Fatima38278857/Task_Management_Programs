@@ -5,7 +5,7 @@ import com.example.Task_Management_Programs.dto.UserDTO;
 import com.example.Task_Management_Programs.entity.Register;
 import com.example.Task_Management_Programs.entity.UserEntity;
 import com.example.Task_Management_Programs.impl.UserService;
-import com.example.Task_Management_Programs.mapperr.UserMapperr;
+import com.example.Task_Management_Programs.mapperImpl.UserMapperImpl;
 import com.example.Task_Management_Programs.repository.RegisterRepository;
 import com.example.Task_Management_Programs.repository.UserRepository;
 import com.example.Task_Management_Programs.security.RegistrationRequest;
@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
  *
  * Используемые зависимости:
  * - {@link UserRepository} — для работы с пользователями в базе данных.
- * - {@link UserMapperr} — для преобразования сущностей пользователей в DTO.
+ * - {@link UserMapperImpl} — для преобразования сущностей пользователей в DTO.
  * - {@link BCryptPasswordEncoder} — для хэширования паролей при регистрации.
  * - {@link RegisterRepository} — для управления учетными записями регистрации.
  *
@@ -46,14 +46,14 @@ import org.springframework.stereotype.Service;
 public class UserImpl implements UserService {
     private static final Logger log = LoggerFactory.getLogger(UserImpl.class);
     private final UserRepository userRepository;
-    private final UserMapperr userMapperr;
+    private final UserMapperImpl userMapperImpl;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RegisterRepository registerRepository;
 
     @Autowired
-    public UserImpl(UserRepository userRepository, UserMapperr userMapperr, BCryptPasswordEncoder passwordEncoder, RegisterRepository registerRepository) {
+    public UserImpl(UserRepository userRepository, UserMapperImpl userMapperImpl, BCryptPasswordEncoder passwordEncoder, RegisterRepository registerRepository) {
         this.userRepository = userRepository;
-        this.userMapperr = userMapperr;
+        this.userMapperImpl = userMapperImpl;
         this.passwordEncoder = passwordEncoder;
         this.registerRepository = registerRepository;
     }
@@ -98,7 +98,7 @@ public class UserImpl implements UserService {
         UserEntity user = currentUser();
 
         if (user != null) {
-            return userMapperr.toDTO(user);
+            return userMapperImpl.toDTO(user);
         }
         throw new RuntimeException("Нет авторизованного пользователя");
     }
@@ -119,7 +119,7 @@ public class UserImpl implements UserService {
      */
     @Override
     public ResponseEntity<String> registerUser(RegistrationRequest request) {
-        String username = request.login(); // Используем правильный метод геттера
+        String username = request.login();
         String password = request.password();
         String confirmPassword = request.confirmPassword();
 

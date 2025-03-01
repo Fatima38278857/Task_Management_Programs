@@ -10,6 +10,8 @@ import com.example.Task_Management_Programs.dto.CommentDTO;
 import com.example.Task_Management_Programs.dto.TaskDTO;
 import com.example.Task_Management_Programs.entity.TaskEntity;
 import com.example.Task_Management_Programs.entity.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +22,9 @@ public interface TaskService {
 
     CommentDTO addCommentToTask(Long taskId, CommentRequest commentRequest);
 
-    List<TaskDTO> getTasksByUserId(Long userId);
-
+    Page<TaskDTO> getTasksByUserId(Long userId, Pageable pageable);
+    Page<TaskDTO> getTasksWithFilters(String status, String priority, Pageable pageable);
+    Page<TaskDTO> getTasksByExecutor(Long executorId, Pageable pageable);
     TaskDTO addTask(CreateOrUpdateTaskDTO properties, Long id);
 
     Optional<TaskEntity> getTask(Long id);
